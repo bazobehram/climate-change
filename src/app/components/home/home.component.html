@@ -1,72 +1,51 @@
 <app-header />
-<mat-tab-group>
+<mat-tab-group
+  #tabGroup="matTabGroup"
+  (selectedTabChange)="matChange(tabGroup.selectedIndex)"
+>
   <mat-tab label="Sıcaklık">
-    <h2>1. yıldan günümüze küresel sıcaklık anormallikleri</h2>
-    <p>
-      Mevcut küresel ısınma oranı doğal değil. 1880'den 1981'e kadar on yılda
-      bir (0,07°C / 0,13°F) idi. 1981'den bu yana bu oran (0,18°C / 0,32°F)'ye
-      yükseldi. İklim Değişikliği: Küresel Sıcaklık . Bu grafikte yer alan
-      küresel sıcaklıktaki geçmişteki ani artışların bir kısmı, Roma Sıcak
-      Dönemi ve Orta Çağ Sıcak Dönemi'ne karşılık gelmektedir. Bu olaylar
-      küresel ölçekte değil, bölgesel ölçekteydi. AR4 İklim Değişikliği 2007:
-      Fiziksel Bilimin Temeli . Tarih öncesi sıcaklık kayıtları hakkında daha
-      fazla bilgi için lütfen şu adresi ziyaret edin: Paleoiklim Arşivlerinden
-      Bilgiler ve Bugünkü Isınma Geçmişten Ne Kadar Farklı? Sanayi devriminden
-      bu yana toplam ortalama küresel sıcaklık artışı (1,0 °C / 1,8 °F)
-      civarındadır. Dünyanın kuzey yarım küresi daha hızlı ısınıyor. Kuzey Kutbu
-      (2 °C / 3,6 °F) ile (4 °C / 7,2 °F) arasında ısındı. Daha fazla ayrıntı
-      için lütfen bu bilimsel yayınları ziyaret edin: Kuzey Kutbu'ndaki son hava
-      sıcaklığı değişiklikleri , ACIA Bilimsel Raporu , Isınmada, Kuzey
-      Yarımküre Güney'i Geride Bırakıyor , Kuzey Kutbu iklim değişikliğinin
-      temel göstergeleri: 1971–2017 , Kuzey Kutbu'nda İklim Değişikliği , En Son
-      Kuzeybatı Kanada'daki yaz ısınması Holosen termal maksimumunu aşıyor .
-      Dünya sıcaklığı ile atmosferdeki Co2, metan ve azot oksit gibi gazların
-      oranı kesin olarak ilişkilidir. Bu konu ve tarih öncesi veriler hakkında
-      daha fazla bilgi için lütfen şu adresi ziyaret edin: CO2 ile küresel
-      sıcaklık arasındaki nedensel yapı ve EC Perspektifi: 800.000 yıllık iklim
-      değişikliğinin muhasebeleştirilmesi.
-    </p>
+    @if (tabGroup.selectedIndex === 0) {
     <app-temperature />
+    }
   </mat-tab>
   <mat-tab label="Karbon dioksit">
+    @if (tabGroup.selectedIndex === 1) {
     <app-carbon-dioxide />
+    }
   </mat-tab>
-  <mat-tab label="Orman ve Karbon"> 
-    <app-forest-carbon/>
+  <mat-tab label="Orman ve Karbon">
+    @if (tabGroup.selectedIndex === 2) {
+    <app-forest-carbon />
+    }
   </mat-tab>
-  <mat-tab label="Azot Oksit"> Azot Oksit </mat-tab>
-  <mat-tab
-    label="Kutup Buzu
-    "
-  >
-    Kutup Buzu
+  <mat-tab label="Nitro Oksit">
+    @if (tabGroup.selectedIndex === 3) {
+    <app-nitroux-oxide />
+    }
+  </mat-tab>
+  <mat-tab label="Kutup Buzu">
+    @if (tabGroup.selectedIndex === 4) {
+    <app-polar-ice-caps />
+    }
   </mat-tab>
   <mat-tab label="Okyanus Isınması">
-    Küresel Okyanus Sıcaklığı Anomalileri, Ocak-Aralık
+    @if (tabGroup.selectedIndex === 5) {
+    <app-ocean-warming />
+    }
   </mat-tab>
 </mat-tab-group>
+<div id="chat-container">
+  @if (response) {
+  <img
+    src="assets/img/gemini_logo.svg"
+    alt="gemini logo"
+    width="250"
+  />
+  <p [@typeWritterEffect] [innerHTML]="response"></p>
+  } @else {
+  <h2>Gemini yorumluyor... Lütfen Bekleyiniz</h2>
+  <mat-spinner></mat-spinner>
+  }
+</div>
 
-<!-- <mat-grid-list cols="2" rowHeight="2:1">
-    <mat-grid-tile>
-      <h2>1. yıldan günümüze küresel sıcaklık anormallikleri
-      </h2>
-      <p>Mevcut küresel ısınma oranı doğal değil. 1880'den 1981'e kadar on yılda bir (0,07°C / 0,13°F) idi. 1981'den bu yana bu oran (0,18°C / 0,32°F)'ye yükseldi. İklim Değişikliği: Küresel Sıcaklık .
-        Bu grafikte yer alan küresel sıcaklıktaki geçmişteki ani artışların bir kısmı, Roma Sıcak Dönemi ve Orta Çağ Sıcak Dönemi'ne karşılık gelmektedir. Bu olaylar küresel ölçekte değil, bölgesel ölçekteydi. AR4 İklim Değişikliği 2007: Fiziksel Bilimin Temeli . Tarih öncesi sıcaklık kayıtları hakkında daha fazla bilgi için lütfen şu adresi ziyaret edin: Paleoiklim Arşivlerinden Bilgiler ve Bugünkü Isınma Geçmişten Ne Kadar Farklı?
-        Sanayi devriminden bu yana toplam ortalama küresel sıcaklık artışı (1,0 °C / 1,8 °F) civarındadır. Dünyanın kuzey yarım küresi daha hızlı ısınıyor. Kuzey Kutbu (2 °C / 3,6 °F) ile (4 °C / 7,2 °F) arasında ısındı. Daha fazla ayrıntı için lütfen bu bilimsel yayınları ziyaret edin: Kuzey Kutbu'ndaki son hava sıcaklığı değişiklikleri , ACIA Bilimsel Raporu , Isınmada, Kuzey Yarımküre Güney'i Geride Bırakıyor , Kuzey Kutbu iklim değişikliğinin temel göstergeleri: 1971–2017 , Kuzey Kutbu'nda İklim Değişikliği , En Son Kuzeybatı Kanada'daki yaz ısınması Holosen termal maksimumunu aşıyor .
-        Dünya sıcaklığı ile atmosferdeki Co2, metan ve azot oksit gibi gazların oranı kesin olarak ilişkilidir. Bu konu ve tarih öncesi veriler hakkında daha fazla bilgi için lütfen şu adresi ziyaret edin: CO2 ile küresel sıcaklık arasındaki nedensel yapı ve EC Perspektifi: 800.000 yıllık iklim değişikliğinin muhasebeleştirilmesi.
-        </p>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <h2>Effects of Climate Change</h2>
-      <p>Climate change has led to rising sea levels, extreme weather events, and threats to wildlife. It's crucial that we take action now.</p>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <h2>How to Help</h2>
-      <p>There are many ways to help combat climate change, from reducing energy consumption to advocating for clean energy solutions in your community.</p>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <h2>Learn More</h2>
-      <p>Stay informed about climate change, its impacts, and how you can help. Knowledge is power.</p>
-    </mat-grid-tile>
-  </mat-grid-list> -->
 <app-footer />

@@ -1,13 +1,24 @@
-<ngx-charts-line-chart
-  [view]="view"
-  [results]="data"
-  [gradient]="false"
-  [xAxis]="true"
-  [yAxis]="true"
-  [legend]="true"
-  [showXAxisLabel]="true"
-  [showYAxisLabel]="true"
-  [xAxisLabel]="'Time'"
-  [yAxisLabel]="'CO2 Level'"
-  [timeline]="true">
-</ngx-charts-line-chart>
+@if (dataStore.$forestCarbon().length > 0) {
+<div #ContainerRef class="chart-container">
+  <h2 class="chart-title">
+    Bu bölüm, zaman içinde orman örtüsü ve ormanlarda depolanan karbon miktarını
+    ve verilerdeki eğilim ve belirsizliği gösterir.
+  </h2>
+  <ngx-charts-line-chart
+    [view]="[ContainerRef.offsetWidth, 600]"
+    [results]="dataStore.$forestCarbon()"
+    [gradient]="false"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="true"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    [xAxisLabel]="'Zaman'"
+    [yAxisLabel]="'Orman Karbon Seviyesi'"
+    [timeline]="true"
+  >
+  </ngx-charts-line-chart>
+</div>
+} @else {
+<p class="loading-text">Veriler yükleniyor... <mat-spinner></mat-spinner></p>
+}

@@ -1,24 +1,23 @@
-@if (dataStore.$temperature().length > 0) {
+@if (dataStore.$nitroOxide().length > 0) {
 <div #ContainerRef class="chart-container">
   <h2 class="chart-title">
-    Bu bölüm, zaman içindeki ortalama küresel sıcaklığı ve verilerdeki eğilim ve
-    belirsizliği gösterir.
+    Bu bölümde zaman içinde atmosferdeki nitro oksit konsantrasyonunu ve
+    verilerdeki eğilim ve belirsizliği gösterir.
   </h2>
   <ngx-charts-line-chart
     [view]="[ContainerRef.offsetWidth, 600]"
-    [results]="dataStore.$temperature()"
+    [results]="dataStore.$nitroOxide()"
     [gradient]="false"
     [xAxis]="true"
     [yAxis]="true"
     [legend]="true"
     [showXAxisLabel]="true"
     [showYAxisLabel]="true"
-    [autoScale]="true"
+    yAxisLabel="Nitro Oksit Seviyesi"
     xAxisLabel="Zaman"
-    yAxisLabel="Sıcaklık Değişikliği"
   >
   </ngx-charts-line-chart>
 </div>
 } @else {
-<p class="loading-text">Veriler yükleniyor... <mat-spinner></mat-spinner></p>
+<p>Veriler yükleniyor... <mat-spinner></mat-spinner></p>
 }

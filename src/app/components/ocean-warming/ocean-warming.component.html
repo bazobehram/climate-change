@@ -1,21 +1,21 @@
-@if (dataStore.$carbonDioxide().length > 0) {
+@if (dataStore.$oceanWarming().length > 0) {
 <div #ContainerRef class="chart-container">
   <h2 class="chart-title">
-    Bu bölüm, atmosferdeki karbondioksit konsantrasyonunun zaman içindeki
-    miktarını ve verilerdeki eğilim ve belirsizliği gösterir.
+    Bu bölüm, zaman içindeki ortalama küresel okyanus sıcaklığını ve verilerdeki
+    eğilim ve belirsizliği gösterir.
   </h2>
   <ngx-charts-line-chart
-    [view]="[ContainerRef.offsetWidth, 600]"
-    [results]="dataStore.$carbonDioxide()"
+  [view]="[ContainerRef.offsetWidth, 600]"
+  [results]="dataStore.$oceanWarming()"
     [gradient]="false"
     [xAxis]="true"
     [yAxis]="true"
     [legend]="true"
     [showXAxisLabel]="true"
     [showYAxisLabel]="true"
-    [xAxisLabel]="'Zaman'"
-    [yAxisLabel]="'CO2 Seviyesi'"
-    [timeline]="true"
+    [autoScale]="true"
+    xAxisLabel="Zaman"
+    yAxisLabel="Okyanus Isınması"
   >
   </ngx-charts-line-chart>
 </div>

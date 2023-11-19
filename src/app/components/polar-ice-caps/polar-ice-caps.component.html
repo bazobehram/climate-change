@@ -1,21 +1,20 @@
-@if (dataStore.$carbonDioxide().length > 0) {
+@if (dataStore.$polarIceCaps().length > 0) {
 <div #ContainerRef class="chart-container">
   <h2 class="chart-title">
-    Bu bölüm, atmosferdeki karbondioksit konsantrasyonunun zaman içindeki
-    miktarını ve verilerdeki eğilim ve belirsizliği gösterir.
+    Bu bölüm Arktik deniz buzunun zaman içindeki kapsamını ve alanını, ayrıca
+    verilerdeki eğilimi ve belirsizliği gösterir.
   </h2>
   <ngx-charts-line-chart
     [view]="[ContainerRef.offsetWidth, 600]"
-    [results]="dataStore.$carbonDioxide()"
+    [results]="dataStore.$polarIceCaps()"
     [gradient]="false"
     [xAxis]="true"
     [yAxis]="true"
     [legend]="true"
     [showXAxisLabel]="true"
     [showYAxisLabel]="true"
-    [xAxisLabel]="'Zaman'"
-    [yAxisLabel]="'CO2 Seviyesi'"
-    [timeline]="true"
+    xAxisLabel="Zaman"
+    yAxisLabel="Kutup Buzu"
   >
   </ngx-charts-line-chart>
 </div>

@@ -1,62 +1,98 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { map, take } from "rxjs/operators";
+import { API_CONFIG } from "./api.config";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class DataService {
-  private baseUrl = 'https://global-warming.org/api/';
-  private temperaturePath = 'temperature-api';
-  private co2Path = 'co2-api';
-  private baseUrl2 =
-    'https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/Indicator_3_1_Climate_Indicators_Annual_Mean_Global_Surface_Temperature/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json';
+  private baseUrl = API_CONFIG.baseUrl;
+  private nitroOxideApi = API_CONFIG.nitroOxideApi;
+  private polarIceCapsApi = API_CONFIG.polarIceCapsApi;
+  private oceanWarmingApi = API_CONFIG.oceanWarmingApi;
+  private forestandCarbonApi = API_CONFIG.forestandCarbonApi;
+  private temperatureApi = API_CONFIG.temperatureApi;
+  private co2Path = API_CONFIG.co2Path;
 
   constructor(private http: HttpClient) {}
 
-  private getAllData(path: string) {
-    return this.http.get(`${this.baseUrl}${path}`);
+  generateContentWithGeminiPro(prompt: string) {
+    const API_KEY = "yours-api-key";
+    const genAI = new GoogleGenerativeAI(API_KEY);
+    async function response(): Promise<string> {
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+      return text;
+    }
+
+    return response();
   }
 
-
-
-  getTemperatureData() {
-    return this.http.get<any[]>(`${this.baseUrl}${this.temperaturePath}`).pipe(
+  getNitrousOxideData() {
+    return this.http.get(`${this.baseUrl}${this.nitroOxideApi}`).pipe(
+      take(1),
       map((data: any) => {
         return [
           {
-            name: 'Kara',
-            series: data.result.map((item: { time: any; land: any }) => ({
-              name: item.time,
-              value: item.land,
-            })),
+            name: "Ortalama",
+            series: data.nitrous.map(
+              (item: { date: string; average: string }) => ({
+                name: item.date,
+                value: parseFloat(item.average),
+              })
+            ),
           },
           {
-            name: 'İstasyon',
-            series: data.result.map((item: { time: any; station: any }) => ({
-              name: item.time,
-              value: item.station,
-            })),
+            name: "Gidişat",
+            series: data.nitrous.map(
+              (item: { date: string; trend: string }) => ({
+                name: item.date,
+                value: parseFloat(item.trend),
+              })
+            ),
+          },
+          {
+            name: "Ortalama Belirsizlik",
+            series: data.nitrous.map(
+              (item: { date: string; averageUnc: string }) => ({
+                name: item.date,
+                value: parseFloat(item.averageUnc),
+              })
+            ),
+          },
+          {
+            name: "Ortalama Gidişat",
+            series: data.nitrous.map(
+              (item: { date: string; trendUnc: string }) => ({
+                name: item.date,
+                value: parseFloat(item.trendUnc),
+              })
+            ),
           },
         ];
       })
     );
   }
 
-  public getCo2Data() {
-    return this.http.get<any[]>(`${this.baseUrl}${this.co2Path}`).pipe(
+  public getCarbonDioxideData() {
+    return this.http.get(`${this.baseUrl}${this.co2Path}`).pipe(
+      take(1),
       map((data: any) => {
         return [
           {
-            name: 'Cycle',
-            series: data.co2.map((item: { year: any; cycle: any }) => ({
+            name: "Cycle",
+            series: data.co2.map((item: { year: string; cycle: string }) => ({
               name: item.year,
               value: item.cycle,
             })),
           },
           {
-            name: 'Trend',
-            series: data.co2.map((item: { year: any; trend: any }) => ({
+            name: "Trend",
+            series: data.co2.map((item: { year: string; trend: string }) => ({
               name: item.year,
               value: item.trend,
             })),
@@ -67,27 +103,85 @@ export class DataService {
   }
 
   getForestAndCarbonData() {
-    return this.http.get('https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/Indicator_3_5/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson');
+    return this.http.get(this.forestandCarbonApi).pipe(
+      take(1),
+      map((data: any) => {
+        const transformedData = data.features.map((entry: any) => {
+          const countryName = entry.properties.Country;
+          const series = Object.entries(entry.properties)
+            .filter(([key, value]) => key.startsWith("F") && value !== null)
+            .map(([key, value]) => ({ name: key.substring(1), value }));
 
+          return { name: countryName, series };
+        });
+        return transformedData;
+      })
+    );
   }
 
-  getData() {
-    return this.http.get(this.baseUrl2);
+  getTemperatureData() {
+    return this.http.get(this.temperatureApi).pipe(
+      take(1),
+      map((data: any) => {
+        const transformedData = data.features.map((entry: any) => {
+          const countryName = entry.attributes.Country;
+          const series = Object.entries(entry.attributes)
+            .filter(([key, value]) => key.startsWith("F") && value !== null)
+            .map(([key, value]) => ({ name: key.substring(1), value }));
+
+          return { name: countryName, series };
+        });
+        return transformedData;
+      })
+    );
   }
 
-  public getMethaneData() {
-    return this.getAllData('methane-api');
-  }
-
-  public getNitrousOxideData() {
-    return this.getAllData('nitrous-oxide-api');
-  }
-
-  public getArcticData() {
-    return this.getAllData('arctic-api');
+  public getPolarIceCaps() {
+    return this.http.get(`${this.baseUrl}${this.polarIceCapsApi}`).pipe(
+      take(1),
+      map((data: any) => {
+        return [
+          {
+            name: "extent",
+            series: data.arcticData.map(
+              (item: { year: string; extent: string }) => ({
+                name: item.year,
+                value: item.extent,
+              })
+            ),
+          },
+          {
+            name: "area",
+            series: data.arcticData.map(
+              (item: { year: string; area: string }) => ({
+                name: item.year,
+                value: item.area,
+              })
+            ),
+          },
+        ];
+      })
+    );
   }
 
   public getOceanWarmingData() {
-    return this.getAllData('ocean-warming-api');
+    return this.http.get(`${this.baseUrl}${this.oceanWarmingApi}`).pipe(
+      take(1),
+      map((data: any) => {
+        let seriesData = [];
+        for (let year in data.result) {
+          seriesData.push({
+            name: year,
+            value: parseFloat(data.result[year]),
+          });
+        }
+        return [
+          {
+            name: "Ocean Warming",
+            series: seriesData,
+          },
+        ];
+      })
+    );
   }
 }

@@ -1,0 +1,23 @@
+.body {
+    position: fixed;
+    background-image: url(/assets/img/climate-change.webp);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 50%;
+}
+
+#chat-container {
+  border: 1px solid #ccc;
+    overflow-y: auto;
+    display: flex;
+    margin: 10px;
+    padding-bottom: 15px;
+    background: #2980B9;
+    background: -webkit-linear-gradient(to right, #FFFFFF, #6DD5FA, #2980B9);
+    background: linear-gradient(to right, #FFFFFF, #6DD5FA, #2980B9);
+    
+}
+
+.message {
+  margin-bottom: 10px;
+}
