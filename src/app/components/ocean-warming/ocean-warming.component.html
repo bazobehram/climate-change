@@ -1,12 +1,12 @@
-@if (dataStore.$temperature().length > 0) {
+@if (dataStore.$oceanWarming().length > 0) {
 <div class="chart-container">
   <h2 class="chart-title">
-    Bu bölüm, zaman içindeki ortalama küresel sıcaklığı ve verilerdeki eğilim ve
-    belirsizliği gösterir.
+    Bu bölüm, zaman içindeki ortalama küresel okyanus sıcaklığını ve verilerdeki
+    eğilim ve belirsizliği gösterir.
   </h2>
   <ngx-charts-line-chart
     [view]="[1500, 1000]"
-    [results]="dataStore.$temperature()"
+    [results]="dataStore.$oceanWarming()"
     [gradient]="false"
     [xAxis]="true"
     [yAxis]="true"
@@ -15,7 +15,7 @@
     [showYAxisLabel]="true"
     [autoScale]="true"
     xAxisLabel="Time"
-    yAxisLabel="Temperature Change"
+    yAxisLabel="Ocean Warming"
   >
   </ngx-charts-line-chart>
 </div>

@@ -1,13 +1,24 @@
-<ngx-charts-line-chart
-  [view]="view"
-  [results]="data"
-  [gradient]="false"
-  [xAxis]="true"
-  [yAxis]="true"
-  [legend]="true"
-  [showXAxisLabel]="true"
-  [showYAxisLabel]="true"
-  [xAxisLabel]="'Time'"
-  [yAxisLabel]="'CO2 Level'"
-  [timeline]="true">
-</ngx-charts-line-chart>
+@if (dataStore.$carbonDioxide().length > 0) {
+<div class="chart-container">
+  <h2 class="chart-title">
+    Bu bölüm, atmosferdeki karbondioksit konsantrasyonunun zaman içindeki
+    miktarını ve verilerdeki eğilim ve belirsizliği gösterir.
+  </h2>
+  <ngx-charts-line-chart
+    [view]="view"
+    [results]="dataStore.$carbonDioxide()"
+    [gradient]="false"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="true"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    [xAxisLabel]="'Zaman'"
+    [yAxisLabel]="'CO2 Seviyesi'"
+    [timeline]="true"
+  >
+  </ngx-charts-line-chart>
+</div>
+} @else {
+<p class="loading-text">Veriler yükleniyor... <mat-spinner></mat-spinner></p>
+}

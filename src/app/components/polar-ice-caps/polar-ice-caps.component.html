@@ -1,21 +1,20 @@
-@if (dataStore.$temperature().length > 0) {
+@if (dataStore.$polarIceCaps().length > 0) {
 <div class="chart-container">
   <h2 class="chart-title">
-    Bu bölüm, zaman içindeki ortalama küresel sıcaklığı ve verilerdeki eğilim ve
-    belirsizliği gösterir.
+    Bu bölüm Arktik deniz buzunun zaman içindeki kapsamını ve alanını, ayrıca
+    verilerdeki eğilimi ve belirsizliği gösterir.
   </h2>
   <ngx-charts-line-chart
     [view]="[1500, 1000]"
-    [results]="dataStore.$temperature()"
+    [results]="dataStore.$polarIceCaps()"
     [gradient]="false"
     [xAxis]="true"
     [yAxis]="true"
     [legend]="true"
     [showXAxisLabel]="true"
     [showYAxisLabel]="true"
-    [autoScale]="true"
-    xAxisLabel="Time"
-    yAxisLabel="Temperature Change"
+    xAxisLabel="Country"
+    yAxisLabel="Population"
   >
   </ngx-charts-line-chart>
 </div>

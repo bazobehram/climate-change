@@ -1,0 +1,23 @@
+@if (dataStore.$nitroOxide().length > 0) {
+<div class="chart-container">
+  <h2 class="chart-title">
+    Bu bölümde zaman içinde atmosferdeki nitro oksit konsantrasyonunu ve
+    verilerdeki eğilim ve belirsizliği gösterir.
+  </h2>
+  <ngx-charts-line-chart
+    [view]="[1500, 1000]"
+    [results]="dataStore.$nitroOxide()"
+    [gradient]="false"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="true"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    yAxisLabel="Nitrous Oxide Level"
+    xAxisLabel="Year"
+  >
+  </ngx-charts-line-chart>
+</div>
+} @else {
+<p>Veriler yükleniyor... <mat-spinner></mat-spinner></p>
+}
